@@ -24,6 +24,7 @@ public class VE {
     }
 
     public String calc(String query) {
+
         query = query.replaceAll("\\s", "");
         HashMap<String, String> map = new HashMap<>();
         HashMap<myNode, Integer> bfsMap = new HashMap<>();
@@ -38,21 +39,25 @@ public class VE {
             orderForHiiden = query.substring(query.indexOf(')')+1);
             createOrder(orderForHiiden);
         }
-        StringBuilder evidenceReomveGarbage = new StringBuilder();
-        for (int i = 0; i < removeGarbage.length(); i++) {
-            if ((removeGarbage.charAt(i) >= 65 && removeGarbage.charAt(i) <= 90) ||
-                    (removeGarbage.charAt(i) >= 48 && removeGarbage.charAt(i) <= 57))
-                evidenceReomveGarbage.append(removeGarbage.charAt(i));
-            else
-                evidenceReomveGarbage.append(',');
-        }
+         removeGarbage=removeGarbage.substring(removeGarbage.indexOf("|")+1);
+        removeGarbage=removeGarbage.replaceAll("=",",");
+       // System.out.println("remove garbage"+ removeGarbage);
+//        StringBuilder evidenceReomveGarbage = new StringBuilder();
+//        for (int i = 0; i < removeGarbage.length(); i++) {
+//            if ((removeGarbage.charAt(i) >= 65 && removeGarbage.charAt(i) <= 90) ||
+//                    (removeGarbage.charAt(i) >= 48 && removeGarbage.charAt(i) <= 57))
+//                evidenceReomveGarbage.append(removeGarbage.charAt(i));
+//            else
+//                evidenceReomveGarbage.append(',');
+//        }
        // System.out.println(evidenceReomveGarbage+ " check");
        // evidenceReomveGarbage.delete(0,4);
-        evidenceReomveGarbage.delete(0,evidenceReomveGarbage.indexOf(",")+1);
-        evidenceReomveGarbage.delete(0,evidenceReomveGarbage.indexOf(",")+1);
-       // System.out.println(evidenceReomveGarbage+ " check");
-        String[] cleanQ = evidenceReomveGarbage.toString().split(",");
-       // System.out.println(Arrays.toString(cleanQ));
+//        evidenceReomveGarbage.delete(0,evidenceReomveGarbage.indexOf(",")+1);
+//        evidenceReomveGarbage.delete(0,evidenceReomveGarbage.indexOf(",")+1);
+//        System.out.println(evidenceReomveGarbage+ " check");
+       // String[] cleanQ = evidenceReomveGarbage.toString().split(",");
+        String[] cleanQ =removeGarbage.split(",");
+        System.out.println(Arrays.toString(cleanQ));
         for (int i = 0; i < cleanQ.length - 1; i = i + 2) {
             map.put(cleanQ[i], cleanQ[i + 1]);
         }

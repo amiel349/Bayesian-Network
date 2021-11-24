@@ -17,12 +17,12 @@ public class Ex1 {
         LinkedList<String> querylist = new LinkedList<>();
         ff.querySplitter(querylist);
 
-       // bayesianNetwork bn = new bayesianNetwork(f.getXmlName());
-        //bn.networkBuild();
-//        bayesBall bb=new bayesBall(bn,"B1-D1|");
+//        bayesianNetwork bn = new bayesianNetwork(f.getXmlName());
+//        bn.networkBuild();
+//        bayesBall bb=new bayesBall(bn,"A1-D1|C3=T,B2=F,B3=F");
 //        System.out.println(bb.bayesBallQuery());
-       //VE ve = new VE(bn);
-      // System.out.println(ve.calc("P(A1=T|A2=T,B1=T,C3=T) A0-A3-B0-B2-B3-C1-C2-D1"));
+//       VE ve = new VE(bn);
+//      System.out.println(ve.calc("P(B=T|J=T,M=T) A-E"));
         //System.out.println(VE.directAnswer("P(B=T|J=T,M=T) A-E"));
         int index = 0;
         try {
@@ -60,6 +60,6 @@ public class Ex1 {
 
 
 
-    }
+   }
 }
 
