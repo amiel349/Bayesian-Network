@@ -21,9 +21,8 @@ public class Ex1 {
 //        bn.networkBuild();
 //        bayesBall bb=new bayesBall(bn,"A1-D1|C3=T,B2=F,B3=F");
 //        System.out.println(bb.bayesBallQuery());
-//       VE ve = new VE(bn);
-//      System.out.println(ve.calc("P(B=T|J=T,M=T) A-E"));
-        //System.out.println(VE.directAnswer("P(B=T|J=T,M=T) A-E"));
+       //VE ve = new VE(bn);
+      //System.out.println(ve.calc("P(A2=T|C2=v1) D1-C1-B0-A1-B1-A3-C3-B2-B3"));
         int index = 0;
         try {
 
@@ -45,21 +44,11 @@ public class Ex1 {
                     bufferedWriter.newLine();
                 }
             }
-
-
-
-
             bufferedWriter.close();
         }
-
-
         catch (IOException e) {
-
             System.out.print(e.getMessage());
         }
-
-
-
    }
 }
 

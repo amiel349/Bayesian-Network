@@ -41,23 +41,9 @@ public class VE {
         }
          removeGarbage=removeGarbage.substring(removeGarbage.indexOf("|")+1);
         removeGarbage=removeGarbage.replaceAll("=",",");
-       // System.out.println("remove garbage"+ removeGarbage);
-//        StringBuilder evidenceReomveGarbage = new StringBuilder();
-//        for (int i = 0; i < removeGarbage.length(); i++) {
-//            if ((removeGarbage.charAt(i) >= 65 && removeGarbage.charAt(i) <= 90) ||
-//                    (removeGarbage.charAt(i) >= 48 && removeGarbage.charAt(i) <= 57))
-//                evidenceReomveGarbage.append(removeGarbage.charAt(i));
-//            else
-//                evidenceReomveGarbage.append(',');
-//        }
-       // System.out.println(evidenceReomveGarbage+ " check");
-       // evidenceReomveGarbage.delete(0,4);
-//        evidenceReomveGarbage.delete(0,evidenceReomveGarbage.indexOf(",")+1);
-//        evidenceReomveGarbage.delete(0,evidenceReomveGarbage.indexOf(",")+1);
-//        System.out.println(evidenceReomveGarbage+ " check");
        // String[] cleanQ = evidenceReomveGarbage.toString().split(",");
         String[] cleanQ =removeGarbage.split(",");
-        System.out.println(Arrays.toString(cleanQ));
+       // System.out.println(Arrays.toString(cleanQ));
         for (int i = 0; i < cleanQ.length - 1; i = i + 2) {
             map.put(cleanQ[i], cleanQ[i + 1]);
         }
@@ -92,10 +78,12 @@ public class VE {
 
         }
         ArrayList<String>hiddenToRemoveFromBB=new ArrayList<>();
+        if(hiddenforBB.length()>0)
         hiddenforBB=hiddenforBB.substring(0,hiddenforBB.length()-1);
 
         for (String hiddenBayesball: hiddenOrder) {
-            String bb=queryValue+"-"+hiddenBayesball+"|"+hiddenforBB;
+            //String bb=queryValue+"-"+hiddenBayesball+"|"+hiddenforBB;
+            String bb=hiddenBayesball+"-"+queryValue+"|"+hiddenforBB;
             bayesBall bayes = new bayesBall(bn,bb);
             if(bayes.bayesBallQuery().equals("yes"))
                 hiddenToRemoveFromBB.add(hiddenBayesball);
@@ -104,18 +92,21 @@ public class VE {
 
 
         for (String s:valuesToRemove) {
+           // System.out.println("values to remove because of bfs "+s);
             removeFromAllFactores(s);
         }
         for (String s:hiddenToRemoveFromBB) {
+           // System.out.println("values to remove because of bayes ball "+s);
             removeFromAllFactores(s);
         }
-        for (factor f : factors) {
-            System.out.println(f);
-        }
-
-        for (factor f : hidden) {
-            System.out.println(f);
-        }eliminateOneValueFactor();
+//        for (factor f : factors) {
+//            System.out.println(f);
+//        }
+//
+//        for (factor f : hidden) {
+//            System.out.println(f);
+//        }
+        eliminateOneValueFactor();
 
         factor a=factors.get(0);
 
@@ -137,6 +128,7 @@ public class VE {
 //                    System.out.println("factor after join ");
 //                    System.out.println(a);
                     numOfProduct+=a.getTable().get(0).size()-1;
+                   // System.out.println("now product num is "+numOfProduct);
 
                     if (hidden.contains(factortoJoin))
                         hidden.remove(factortoJoin);
@@ -149,10 +141,10 @@ public class VE {
 //                System.out.println("factor befor sum and eliminate ");
 //                System.out.println(a);
                 factor factorAfterSum=sumAndEliminate(a,hiddenOrder.get(0));
-//                System.out.println("factor after sum and eliminate with key "+hiddenOrder.get(0));
+             //   System.out.println("factor after sum and eliminate with key "+hiddenOrder.get(0));
 //                System.out.println(factorAfterSum);
                 hiddenOrder.remove(0);
-                numOfSum+=factorAfterSum.getTable().get(0).size()-1;
+               // numOfSum+=factorAfterSum.getTable().get(0).size()-1;
                 factors.add(factorAfterSum);
                 if(hiddenOrder.isEmpty())
                     break;
@@ -160,6 +152,10 @@ public class VE {
             }
 
         }
+       // System.out.println("finished hiddens join ");
+        //System.out.println(a);
+
+        //System.out.println("***");
         Collections.sort(factors);
         if(factors.size()==1)
             a=factors.get(0);
@@ -171,18 +167,21 @@ public class VE {
 //            System.out.println("and");
 //            System.out.println(factors.get(0));
             a=joinHidden(a,factors.get(0));
-//            System.out.println("factor after join ");
-//            System.out.println(a);
+            //System.out.println("factor after join ");
+            //System.out.println(a);
             numOfProduct+=a.getTable().get(0).size()-1;
+           // System.out.println("now product num is "+numOfProduct);
             factors.remove(0);
+            factors.add(0,a);
         }
        // sumAndEliminate(a,a.getTable().get(0).get(0));
-//        System.out.println("factor before normalize");
-//        System.out.println(a);
+       // System.out.println("factor before normalize");
+        //System.out.println(a);
+        numOfSum+=a.getTable().get(0).size()-2;
         normalize(a);
 //        System.out.println("factor after normalize");
 //        System.out.println(a);
-        numOfSum++;
+
 //        System.out.println("the result factor isssss");
 //        System.out.println(a);
 //        System.out.println("this is the final factor");
@@ -191,22 +190,11 @@ public class VE {
             if(resultType.equals(a.getTable().get(0).get(i)))
                 finalValue=a.getTable().get(1).get(i);
         }
-        if(finalValue.length()>7)
-            finalValue=finalValue.substring(0,7);
+         if(numOfProduct==0)
+             numOfSum=0;
+        finalValue=String.format("%.5f",Double.valueOf(finalValue));
         finalValue+=","+String.valueOf(numOfSum)+","+String.valueOf(numOfProduct);
         //System.out.println(a);
-//        LinkedList<String> parentsList = new LinkedList<>();
-//        for (myNode var : node.getParents()) {
-//            parentsList.add(var.getName());
-//        }
-//        for (String parent : map.keySet()) {
-//            if (parent.equals(node.getName()))
-//                continue;
-//            if (!parentsList.contains(parent)) {
-//                return "false";
-//            }
-//        }
-//        return findProbability(map, node);
         return finalValue;
     }
 
@@ -257,6 +245,7 @@ public class VE {
 //        System.out.println("factor to join");
 //        System.out.println(a);
 //        System.out.println(b);
+//        System.out.println("***");
         if(isNotContained(a,b)){
 //            System.out.println("not containeeddd");
 //            System.out.println(a);
@@ -425,9 +414,12 @@ public class VE {
             probabilty.add(String.valueOf(sum));
         }
         newTable.add(probabilty);
+//        System.out.println("table before sum and eliminate ");
+//        System.out.println(a);
 //        System.out.println("table after sum and eliminate");
 //        System.out.println(b);
-//        System.out.println("***");
+//       System.out.println("***");
+       numOfSum+=(b.getTable().get(0).size()-1)*(bn.findNode(key).getOutcome().length-1);
         return b;
 
 
@@ -564,7 +556,7 @@ public class VE {
                 if (Bsize == indexesForB.size()){
                     double x = Double.valueOf(table.get(table.size() - 1).get(m));
                     double y = Double.valueOf(b.getTable().get(b.getTable().size() - 1).get(i));
-                    System.out.println(x+" x and y "+y);
+                    //System.out.println(x+" x and y "+y);
                     table.get(table.size() - 1).remove(m);
                     table.get(table.size() - 1).add(m, String.valueOf(x * y));
                 }
@@ -592,6 +584,7 @@ public class VE {
 
 
         }
+        Collections.sort(list);
         if(list.size()==0)
             return null;
         if(hidden.contains(list.get(0)))

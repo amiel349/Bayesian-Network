@@ -11,6 +11,7 @@ public class bayesBall {
         this.bn=bn;
         this.line=line;
         observed=new LinkedList<>();
+        resetNodes();
         getStartAndEnd();
         setEvidence();
     }
@@ -30,6 +31,15 @@ public class bayesBall {
                 bn.findNode(key.substring(0,key.indexOf("="))).setColor(true);
             }return;
 
+    }
+    private void resetNodes(){
+        for (myNode node: bn.getMap()) {
+            node.setFromParent(false);
+            node.setFromChild(false);
+            node.setColor(false);
+            node.setVisitedByChild(false);
+            node.setVisitedByParent(false);
+        }
     }
     public String bayesBallQuery(){
         if(start.getChildrens().contains(end)){
